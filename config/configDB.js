@@ -9,6 +9,10 @@ const configDB = {
         products: path.resolve(__dirname, '../data/filePers/products.json'),
         cart: path.resolve(__dirname, '../data/filePers/cart.json'),
     },
+    firebase:{
+        privateKey: path.resolve(__dirname, '../data/fbdat/herediamartinbackend-firebase-adminsdk-86cnz-44c76facd5.json')
+    }
+    ,
     mongodb: {
         url: "mongodb+srv://kamp3rh:coderhouse@backendheredia.pimvu.mongodb.net/ecommerce"
     },
@@ -17,7 +21,7 @@ const configDB = {
         cart: [],
     },
     enVariables: {
-        DB: 'mongodb'
+        DB: 'firebase'
     }
 };
 

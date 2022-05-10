@@ -16,7 +16,8 @@
     "knex": "^2.0.0",
     "mongoose": "^6.3.2",
     "mysql": "^2.18.1",
-    "sqlite3": "^5.0.8"
+    "sqlite3": "^5.0.8",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
