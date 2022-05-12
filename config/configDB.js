@@ -10,7 +10,7 @@ const configDB = {
         cart: path.resolve(__dirname, '../data/filePers/cart.json'),
     },
     firebase:{
-        privateKey: path.resolve(__dirname, '../data/fbdat/herediamartinbackend-firebase-adminsdk-86cnz-44c76facd5.json')
+        privateKey: path.resolve(__dirname, '../data/fbdat/herediamartinbackend-firebase-adminsdk-86cnz-44c76facd5.json'),
     }
     ,
     mongodb: {
@@ -20,10 +20,12 @@ const configDB = {
         products: [],
         cart: [],
     },
-    enVariables: {
-        DB: 'firebase'
+    DBSwitch: {
+        DB: 'mongodb',
     }
 };
+
+console.log(`Inicializado el modulo ${configDB.DBSwitch.DB} para la base de datos`);
 
 
 export default configDB;

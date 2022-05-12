@@ -12,7 +12,11 @@ ProductRoute.get('/:id?', async (req, res) => {
     res.json(product);
   } else {
     const products = await productDao.readAll();
+    if(products.length > 0){
     res.json(products);
+    }else{
+      res.json({message: "No products found"});
+    }
   }
 });
 

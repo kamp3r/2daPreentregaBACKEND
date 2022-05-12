@@ -9,7 +9,7 @@ import CartDaoFirebase from "./cart/cartDaoFirebase.js";
 import ProductDaoFirebase from "./products/productDaoFirebase.js";
 
 
-const DB = configDB.enVariables.DB;
+const DB = configDB.DBSwitch.DB;
 
 export const cartDao = {
     'fileSystem': new CartDaoFile,

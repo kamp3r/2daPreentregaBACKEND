@@ -1,6 +1,6 @@
-import admin from "firebase-admin";
-import { v4 as uuidv4 } from "uuid";
-import configDB from "../config/configDB.js";
+import admin from 'firebase-admin';
+import { v4 as uuidv4 } from 'uuid';
+import configDB from '../config/configDB.js';
 
 const _prvkey = configDB.firebase.privateKey;
 
@@ -9,7 +9,6 @@ try {
     {
       credential: admin.credential.cert(_prvkey),
     },
-    console.log("Firebase inizialized")
   );
 } catch (err) {
   console.log(err);
@@ -53,16 +52,38 @@ class FirebaseHandler {
   }
   async updateElement(id, element) {
     try {
-      const updateProd = await this.coll.doc(id).update(element);
-      return updateProd;
+      const updateProd = await this.coll
+        .where('id', '==', id)
+        .get()
+        .then((snapshot) => {
+          if (snapshot.empty) {
+            return null;
+          } else {
+            snapshot.forEach((doc) => {
+              doc.ref.update(element);
+              return element;
+            });
+          }
+        });
     } catch (err) {
       console.error(err);
     }
   }
   async deleteElement(id) {
     try {
-      const index = await this.coll.doc(id).delete();
-      return index;
+      const deletedItem = await this.coll
+        .where('id', '==', id)
+        .get()
+        .then((snapshot) => {
+          if (snapshot.empty) {
+            return null;
+          } else {
+            snapshot.forEach((doc) => {
+              doc.ref.delete();
+              return id;
+            });
+          }
+        });
     } catch (err) {
       console.error(err);
     }
@@ -77,13 +98,21 @@ class FirebaseHandler {
   }
   async addByid(id, obj) {
     try {
-      const addInCart = await this.getById(id);
-      if (addInCart) {
-        addInCart.products.push(obj);
-        const cartUpdated = await this.coll.update(addInCart.id, addInCart);
-      } else {
-        return null;
-      }
+      const addInArray = await this.coll
+        .where('id', '==', id)
+        .get()
+        .then((snapshot) => {
+          if (snapshot.empty) {
+            return null;
+          } else {
+            snapshot.forEach((doc) => {
+              let toUpdate = doc.data().products;
+              toUpdate.push(obj);
+              doc.ref.update({ products: toUpdate });
+            })
+          }
+        });
+        return obj;
     } catch (err) {
       console.error(err);
     }
@@ -100,7 +129,7 @@ class FirebaseHandler {
           await this.updateElement(idCart, data);
           return data;
         } else {
-          return null;
+          return { message: 'Product not found' };
         }
       }
     } catch (err) {

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import configDB from '../config/configDB.js';
+import { v4 as uuidv4 } from 'uuid';
 
 const URL = configDB.mongodb.url;
 
@@ -12,6 +13,7 @@ class MongoHandler {
   async readAll() {
     try {
       const data = await this.collection.find();
+      console.log(data);
       return data;
     } catch (err) {
       console.error(err);
@@ -28,7 +30,7 @@ class MongoHandler {
   async save(obj) {
     try {
       const date = new Date().toISOString();
-      const object = { ...obj, timestamp: date };
+      const object = { ...obj, timestamp: new Date().toISOString(), _id: uuidv4() };
       const data = await this.collection.create(object);
       return data;
     } catch (err) {

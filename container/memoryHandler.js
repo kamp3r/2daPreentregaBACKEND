@@ -22,7 +22,7 @@ class MemoryHandler {
   }
   async save(obj) {
       let data = await this.readAll();
-      const productSave = { ...obj, id: this.counter++ + 1 };
+      const productSave = { ...obj, id: this.counter++ + 1, timestamp: new Date().toISOString() };
       console.log(obj)
       data.push(productSave);
     try{
@@ -86,6 +86,8 @@ class MemoryHandler {
           data[index].products.splice(indexProduct, 1);
           return data[index];
         }
+      }else{
+        return null
       }
     } catch (err) {
       console.error(err);

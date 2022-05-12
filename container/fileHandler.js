@@ -1,4 +1,5 @@
 import { promises as fs } from 'fs';
+import { v4 as uuidv4 } from 'uuid';
 
 class FileHandler {
   constructor(path) {
@@ -23,17 +24,11 @@ class FileHandler {
   }
   async save(obj) {
     const objts = await this.readAll();
-    let assignId;
-    if (objts.length == 0) {
-      assignId = 1;
-    } else {
-      assignId = objts[objts.length - 1].id + 1;
-    }
-    const objectSave = { ...obj, id: assignId };
+    const objectSave = { ...obj, id: uuidv4(), timestamp: new Date().toISOString() };
     objts.push(objectSave);
     try {
       await fs.writeFile(this.path, JSON.stringify(objts, null, 2));
-      return assignId;
+      return objectSave;
     } catch (err) {
       console.error(err);
     }
@@ -42,7 +37,7 @@ class FileHandler {
     try {
       const data = await this.readAll();
       const index = data.findIndex((elem) => elem.id === id);
-      data[index] = element;
+      data[index] = { ...element, id };
       const dataStr = JSON.stringify(data);
       await fs.writeFile(this.path, dataStr, 'utf8');
       return element;
