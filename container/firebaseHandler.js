@@ -61,7 +61,7 @@ class FirebaseHandler {
           } else {
             snapshot.forEach((doc) => {
               doc.ref.update(element);
-              return element;
+              return { message: 'Product updated' };
             });
           }
         });
@@ -80,7 +80,7 @@ class FirebaseHandler {
           } else {
             snapshot.forEach((doc) => {
               doc.ref.delete();
-              return id;
+              return { message: 'Product deleted' };
             });
           }
         });

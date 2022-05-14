@@ -1,4 +1,5 @@
 import path from 'node:path'
+import 'dotenv/config'
 import { fileURLToPath } from 'node:url'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -21,7 +22,7 @@ const configDB = {
         cart: [],
     },
     DBSwitch: {
-        DB: 'mongodb',
+        DB: process.env.DATABASE,
     }
 };
 
